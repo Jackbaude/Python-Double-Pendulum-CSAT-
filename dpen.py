@@ -75,7 +75,8 @@ def deriv(state, t):
 
 #this is the time spacing because the odeint method needs this time spacing because we are taking the dirvative in respect to time
 dt = 0.00001
-t = np.arange(0.0, 20, dt)
+totalTime = 20
+t = np.arange(0.0, totalTime, dt)
 
 #the inital state of the angles of the pen
 theta1 = 120.0
@@ -99,20 +100,47 @@ y2 = -L2*cos(dydt[:, 2]) + y1
 #print(deriv(state, t))
 #print (dydt)
 
+def returnPoints():
+    print (x1)
+    print (y1)
+    print (x2)
+    print (y2)
+#t is time in
+def calcTime(t):
+    #tcal = 15.0013
+    tPercent = t/totalTime
+    #we need the amount of time points so we can find the nth time point in the array that the deriv returns so we can calcualte where the pen is in space
+    amountOfTimePoints = totalTime / dt
+    #by multiplying the amount of time points by the percentage of points we can get the index we are looking for in the list that deriv returns
+    TS = int((amountOfTimePoints * tPercent) - dt)
+    print ("\n\n\n\n")
+    print ("{} th Point of " .format(TS, amountOfTimePoints))
+    print("The points of the orgin, m1, and m2 are as follows")
+    print ([0, x1[TS], x2[TS]], [0, y1[TS], y2[TS]])
+    x = [0, x1[TS], x2[TS]]
+    y = [0, y1[TS], y2[TS]]
 
-print (x1)
-print (y1)
-print (x2)
-print (y2)
-#Where in time would you like to look at the pendulum
-tIN = 19
-amountOfTimePoints = t / dt
-TS = tIN * amountOfTimePoints
-#plotting the pen
-#solves time for a point of the x2 and y2
-def solveForPoint2(x, y):
-    pass
+    return ("{},{}".format(x,y))
 
+def calcTimePlot(t):
+    plt.plot(calcTime(t))
+    plt.axis([-2, 2, -2, 2])
+    plt.ylabel("double pen")
+    plt.grid()
+    plt.show()
+
+calcTime(15.0012)
+calcTimePlot(15.0012)
+"""
+tcal = 15.0013
+tPercent = tcal/totalTime
+#we need the amount of time points so we can find the nth time point in the array that the deriv returns so we can calcualte where the pen is in space
+amountOfTimePoints = totalTime / dt
+#by multiplying the amount of time points by the percentage of points we can get the index we are looking for in the list that deriv returns
+TS = int((amountOfTimePoints * tPercent) - dt)
+print ("\n\n\n\n")
+print ("{} th Point of " .format(TS, amountOfTimePoints))
+print("The points of the orgin, m1, and m2 are as follows")
 
 plt.plot([0, x1[TS], x2[TS]], [0, y1[TS], y2[TS]])
 plt.axis([-2, 2, -2, 2])
@@ -120,3 +148,4 @@ plt.axis([-2, 2, -2, 2])
 plt.ylabel("double pen")
 plt.grid()
 plt.show()
+"""
