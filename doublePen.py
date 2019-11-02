@@ -7,6 +7,7 @@ Jack Baude double pendulum prediction
 """
 
 
+
 import matplotlib.pyplot as plt
 import numpy as np
 from numpy import cos, sin
@@ -69,13 +70,9 @@ class DoublePen:
 
     # calculates the postion of the double pendulum
     def calculate(self, tcal):
-        # calling the getTimeArray method to get the t stamp information
-        # tcal is the time we are calculating for
-        tPercent = tcal / self.totalTime
-        # we need the amount of time points so we can find the nth time point in the array that the deriv returns so we can calcualte where the pen is in space
-        amountOfTimePoints = self.totalTime / self.dt
-        # by multiplying the amount of time points by the percentage of points we can get the index we are looking for in the list that deriv returns
-        ts = int((amountOfTimePoints * tPercent) - self.dt)
+        time_stamp = self.time_stamp(tcal)
+        ts = time_stamp[0]
+        amountOfTimePoints = time_stamp[1]
         cords = self.getMassCords()
         print("\n{} sample of {} time samples".format(ts, amountOfTimePoints))
         print("The points of the orgin, m1, and m2 are as follows")
@@ -84,7 +81,17 @@ class DoublePen:
                 cords[0][ts], cords[1][ts], cords[2][ts], cords[3][ts]
             )
         )
-        plt.plot([0, cords[0][ts], cords[2][ts]], [0, cords[1][ts], cords[3][ts]])
+        xs = [0, cords[0][ts], cords[2][ts]]
+        ys = [0, cords[1][ts], cords[3][ts]]
+        return[xs,ys]
+
+    def plot(self,tcal):
+        points = self.calculate(tcal)
+        xs = points[0]
+        ys = points[1]
+        print(xs)
+        print(ys)
+        plt.plot(xs,ys)
         plt.axis([-2, 2, -2, 2])
         plt.title("Double Pendulum Prediction")
         plt.ylabel("Double Pendulm {} seconds in".format(tcal))
@@ -101,6 +108,15 @@ class DoublePen:
         y2 = -(self.l2) * cos(dydt[:, 2]) + y1
 
         return [x1, y1, x2, y2]
+    #return the time stamp or the nth point for nth time
+    def time_stamp(self, tcal):
+        # tcal is the time we are calculating for
+        tPercent = tcal / self.totalTime
+        # we need the amount of time points so we can find the nth time point in the array that the deriv returns so we can calcualte where the pen is in space
+        amountOfTimePoints = self.totalTime / self.dt
+        # by multiplying the amount of time points by the percentage of points we can get the index we are looking for in the list that deriv returns
+        ts = int((amountOfTimePoints * tPercent) - self.dt)
+        return ts, amountOfTimePoints
 
     # changes the totaltime and the deltaT or the space between time samples
     def changeTime(self, tt, deltaT):
@@ -115,7 +131,7 @@ class DoublePen:
 
 def main():
     p1 = DoublePen(1, 1, 1, 1, 120.0, 0)
-    p1.calculate(9.134)
+    p1.plot(11.23)
 
 
 if __name__ == "__main__":
