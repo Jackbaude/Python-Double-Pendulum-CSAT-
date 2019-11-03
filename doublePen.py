@@ -1,12 +1,9 @@
 """
-Jack Baude double pendulum prediction
-
-- predicts where a double pendulm will be in space with time
-  given the mass of the two bobs, lengths of the pendulum arms
-  and the intial starting postion
+    Jack Baude
+    - Double Pendulm class
+    October 2019
+    CSAT
 """
-
-
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -24,7 +21,7 @@ class DoublePen:
     v2 = 0.0
     # Gravity velocity
     G = 9.81
-
+    #constructor that takes the: masses, lengths , and intial starying angles of the pendulum
     def __init__(self, mass1, mass2, length1, length2, intTheta1, intTheta2):
         self.m1 = mass1
         self.m2 = mass2
@@ -36,12 +33,7 @@ class DoublePen:
     # double pendulum equation that takes in the intial state of the pen as a array
     # and t as a numpy arange
     def equation(self, state, t):
-        """
-            theta1 = state[0]
-            theta2 = state[2]
-            intVm1 = state[1]
-            intVm2 = state[3]
-            """
+
         # makes a empty array of zeros
         dydx = np.zeros_like(state)
         # sets the dydx[1] equal to angular velocity of mass 1
@@ -74,24 +66,18 @@ class DoublePen:
         ts = time_stamp[0]
         amountOfTimePoints = time_stamp[1]
         cords = self.getMassCords()
-        print("\n{} sample of {} time samples".format(ts, amountOfTimePoints))
-        print("The points of the orgin, m1, and m2 are as follows")
-        print(
-            "(0,0) , ({},{}) , ({},{})".format(
-                cords[0][ts], cords[1][ts], cords[2][ts], cords[3][ts]
-            )
-        )
         xs = [0, cords[0][ts], cords[2][ts]]
         ys = [0, cords[1][ts], cords[3][ts]]
         return[xs,ys]
 
+    #plots the double pendulum at the time calcualte
     def plot(self,tcal):
         points = self.calculate(tcal)
         xs = points[0]
         ys = points[1]
         print(xs)
         print(ys)
-        plt.plot(xs,ys)
+        plt.plot(xs,ys,'-o')
         plt.axis([-2, 2, -2, 2])
         plt.title("Double Pendulum Prediction")
         plt.ylabel("Double Pendulm {} seconds in".format(tcal))
@@ -108,6 +94,7 @@ class DoublePen:
         y2 = -(self.l2) * cos(dydt[:, 2]) + y1
 
         return [x1, y1, x2, y2]
+
     #return the time stamp or the nth point for nth time
     def time_stamp(self, tcal):
         # tcal is the time we are calculating for
@@ -132,6 +119,7 @@ class DoublePen:
 def main():
     p1 = DoublePen(1, 1, 1, 1, 120.0, 0)
     p1.plot(11.23)
+    print(p1.time_stamp(11.23)[1])
 
 
 if __name__ == "__main__":
