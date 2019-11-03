@@ -9,8 +9,8 @@ p1 = DoublePen(1, 1, 1, 1, 180.0, 16.0)
 
 fig, ax = plt.subplots()
 xdata, ydata = [], []
-
-(ln,) = plt.plot([], [],)
+ax.grid()
+(ln,) = plt.plot([], [],'-o',alpha=1)
 
 
 def init():
@@ -21,25 +21,25 @@ def init():
 
 def update(frame):
     # float(frame)
-    points = p1.calculate(float(frame))
+    points = p1.calculate((frame))
     xs = points[0]
     ys = points[1]
     xdata.clear()
     ydata.clear()
     xdata.append(xs)
     ydata.append(ys)
+
     ln.set_data(xdata, ydata)
     return (ln,)
-
-
 
 
 ani = FuncAnimation(
     fig,
     update,
-    frames=np.arange(1, p1.time_stamp(9.12)[1], 0.1),
+    frames=np.linspace(0, p1.totalTime, 1200),
     interval=0,
     init_func=init,
     blit=True,
 )
+ani.save('double_pendulum.mp4', fps=60,)
 plt.show()
