@@ -21,7 +21,7 @@ class DoublePen:
     v2 = 0.0
     # Gravity velocity
     G = 9.81
-    #constructor that takes the: masses, lengths , and intial starying angles of the pendulum
+    # constructor that takes the: masses, lengths , and intial starying angles of the pendulum
     def __init__(self, mass1, mass2, length1, length2, intTheta1, intTheta2):
         self.m1 = mass1
         self.m2 = mass2
@@ -68,16 +68,16 @@ class DoublePen:
         cords = self.getMassCords()
         xs = [0, cords[0][ts], cords[2][ts]]
         ys = [0, cords[1][ts], cords[3][ts]]
-        return[xs,ys]
+        return [xs, ys]
 
-    #plots the double pendulum at the time calcualte
-    def plot(self,tcal):
+    # plots the double pendulum at the time calcualte
+    def plot(self, tcal):
         points = self.calculate(tcal)
         xs = points[0]
         ys = points[1]
         print(xs)
         print(ys)
-        plt.plot(xs,ys,'-o')
+        plt.plot(xs, ys, "-o")
         plt.axis([-2, 2, -2, 2])
         plt.title("Double Pendulum Prediction")
         plt.ylabel("Double Pendulm {} seconds in".format(tcal))
@@ -95,7 +95,7 @@ class DoublePen:
 
         return [x1, y1, x2, y2]
 
-    #return the time stamp or the nth point for nth time
+    # return the time stamp or the nth point for nth time
     def time_stamp(self, tcal):
         # tcal is the time we are calculating for
         tPercent = tcal / self.totalTime
