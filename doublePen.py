@@ -15,8 +15,7 @@ class DoublePen:
     # Constants
     # dt is the spasce between time points that we are taking the dervative of
     dt = 0.00001
-    totalTime = 20
-    # the intial velocity of the pendulum
+    totalTime = 10
     v1 = 0.0
     v2 = 0.0
     # Gravity velocity

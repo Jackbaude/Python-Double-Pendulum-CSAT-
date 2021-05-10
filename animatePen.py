@@ -6,12 +6,15 @@
 """
 
 import numpy as np
+import matplotlib
 from matplotlib import pyplot as plt
-from matplotlib.animation import FuncAnimation
+import matplotlib.animation as animation
+matplotlib.use("Agg")
 from doublePen import DoublePen
 
 # the pendulum object
-p1 = DoublePen(1, 1, 1, 1, 180.0, 270.0)
+# Mass one, Mass two, length of rod one, length of rod two, theta one, theta two
+p1 = DoublePen(1, 100, 1, 5, 90.0, 270.0)
 
 
 fig, ax = plt.subplots()
@@ -51,17 +54,21 @@ def update(frame):
     mass_two.set_data(mass_two_xs, mass_two_ys)
     return (ln, mass_two)
 
+#Writer = animation.writers['ffmpeg']
+#writer = Writer(fps=60, metadata=dict(artist='JackBaude'), bitrate=1800)
+writer = animation.FFMpegWriter(fps=60)
+
 
 # animates the double pendulum
-ani = FuncAnimation(
+ani = animation.FuncAnimation(
     fig,
     update,
     frames=np.linspace(0, p1.totalTime, 1200),
-    interval=0,
+    interval=1,
     init_func=init,
     blit=True,
 )
+
 # saves the animation to double_pendulum.mp4, with 60fps
-ani.save("double_pendulum_trace3.mp4", fps=60)
+ani.save("double_pendulum_trace.mp4", writer=writer)
 # plays the animation afterword through matplotlib
-plt.show()
